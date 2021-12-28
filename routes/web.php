@@ -19,13 +19,15 @@ Route::get('/', function () {
     return view('posts');
 });
 
-Route::get('/post/{slug}' , function ($slug){
+Route::get('/post/{post}' , function ($slug){
 
     $path = __DIR__. '/../resources/posts/'.$slug.'.html' ;
 
-    !file_exists($path) ? abort(404) : $path ; 
+    if(!file_exists($path)){
+        return redirect('/');
+    } 
 
     return view('post',[
         'post' => file_get_contents($path)
     ]);
-});
+})->where('post' , '[A-z_/-]+');
