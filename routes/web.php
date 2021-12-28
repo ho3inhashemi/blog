@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Mime\Encoder\ContentEncoderInterface;
 
 use function PHPUnit\Framework\fileExists;
 
@@ -27,7 +28,13 @@ Route::get('/post/{post}' , function ($slug){
         return redirect('/');
     } 
 
+    $post = cache()->remember("posts.{$slug}" , 5 , fn() =>file_get_contents($path));
+
+    // $post = cache()->remember("posts.{post}" , 5 , function() use($path){              
+    //     return file_get_contents($path);
+    // });
+
     return view('post',[
-        'post' => file_get_contents($path)
+        'post' => $post
     ]);
 })->where('post' , '[A-z_/-]+');
