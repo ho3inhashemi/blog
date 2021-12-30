@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Post;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\Mime\Encoder\ContentEncoderInterface;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
-use function PHPUnit\Framework\fileExists;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +19,11 @@ use function PHPUnit\Framework\fileExists;
 
 Route::get('/', function () {
 
-    $posts = Post::all();
-    
-    return view('posts' ,['posts' => $posts] );
+    return view('posts' ,['posts' => Post::all()] );
 
 });
+
+
 
 Route::get('/post/{post}' , function ($slug){
     
